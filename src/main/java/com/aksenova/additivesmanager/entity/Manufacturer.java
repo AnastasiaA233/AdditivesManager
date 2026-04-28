@@ -54,6 +54,6 @@ public class Manufacturer {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "manufacturer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "manufacturers")
     private List<Product> products = new ArrayList<>();
 }
