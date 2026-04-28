@@ -1,0 +1,705 @@
+openapi: 3.0.3
+info:
+  title: API управления номенклатурой пищевых и биологически активных добавок
+  description: Система управления базой данных номенклатуры пищевых добавок и БАД
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+
+tags:
+  - name: Product Types
+    description: Управление типами продукции (Пищевая добавка / БАД)
+  - name: Product Statuses
+    description: Управление статусами продукции (действует / на регистрации / отозван)
+  - name: Manufacturers
+    description: Управление производителями
+  - name: Products
+    description: Управление карточками номенклатуры
+
+paths:
+  # ==================== Product Types ====================
+  /api/product-types:
+    get:
+      tags:
+        - Product Types
+      summary: Получить все типы продукции
+      operationId: getAllProductTypes
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductType'
+    post:
+      tags:
+        - Product Types
+      summary: Создать новый тип продукции
+      operationId: createProductType
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductType'
+      responses:
+        '200':
+          description: Тип успешно создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductType'
+
+  /api/product-types/{id}:
+    get:
+      tags:
+        - Product Types
+      summary: Получить тип продукции по ID
+      operationId: getProductTypeById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductType'
+        '404':
+          description: Тип не найден
+    put:
+      tags:
+        - Product Types
+      summary: Обновить тип продукции
+      operationId: updateProductType
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductType'
+      responses:
+        '200':
+          description: Тип успешно обновлен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductType'
+    delete:
+      tags:
+        - Product Types
+      summary: Удалить тип продукции
+      operationId: deleteProductType
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Тип успешно удален
+
+  /api/product-types/paginated:
+    get:
+      tags:
+        - Product Types
+      summary: Получить страницу типов продукции с пагинацией
+      operationId: getProductTypesPaginated
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          schema:
+            type: integer
+            default: 10
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageProductType'
+
+  # ==================== Product Statuses ====================
+  /api/product-statuses:
+    get:
+      tags:
+        - Product Statuses
+      summary: Получить все статусы продукции
+      operationId: getAllProductStatuses
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductStatus'
+    post:
+      tags:
+        - Product Statuses
+      summary: Создать новый статус продукции
+      operationId: createProductStatus
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductStatus'
+      responses:
+        '200':
+          description: Статус успешно создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductStatus'
+
+  /api/product-statuses/{id}:
+    get:
+      tags:
+        - Product Statuses
+      summary: Получить статус по ID
+      operationId: getProductStatusById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductStatus'
+        '404':
+          description: Статус не найден
+    put:
+      tags:
+        - Product Statuses
+      summary: Обновить статус продукции
+      operationId: updateProductStatus
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductStatus'
+      responses:
+        '200':
+          description: Статус успешно обновлен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductStatus'
+    delete:
+      tags:
+        - Product Statuses
+      summary: Удалить статус продукции
+      operationId: deleteProductStatus
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Статус успешно удален
+
+  /api/product-statuses/paginated:
+    get:
+      tags:
+        - Product Statuses
+      summary: Получить страницу статусов с пагинацией
+      operationId: getProductStatusesPaginated
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          schema:
+            type: integer
+            default: 10
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageProductStatus'
+
+  # ==================== Manufacturers ====================
+  /api/manufacturers:
+    get:
+      tags:
+        - Manufacturers
+      summary: Получить всех производителей
+      operationId: getAllManufacturers
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Manufacturer'
+    post:
+      tags:
+        - Manufacturers
+      summary: Создать нового производителя
+      operationId: createManufacturer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Manufacturer'
+      responses:
+        '200':
+          description: Производитель успешно создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Manufacturer'
+
+  /api/manufacturers/{id}:
+    get:
+      tags:
+        - Manufacturers
+      summary: Получить производителя по ID
+      operationId: getManufacturerById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Manufacturer'
+        '404':
+          description: Производитель не найден
+    put:
+      tags:
+        - Manufacturers
+      summary: Обновить производителя
+      operationId: updateManufacturer
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Manufacturer'
+      responses:
+        '200':
+          description: Производитель успешно обновлен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Manufacturer'
+    delete:
+      tags:
+        - Manufacturers
+      summary: Удалить производителя
+      operationId: deleteManufacturer
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Производитель успешно удален
+
+  /api/manufacturers/paginated:
+    get:
+      tags:
+        - Manufacturers
+      summary: Получить страницу производителей с пагинацией
+      operationId: getManufacturersPaginated
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          schema:
+            type: integer
+            default: 10
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageManufacturer'
+
+  # ==================== Products ====================
+  /api/products:
+    get:
+      tags:
+        - Products
+      summary: Получить все продукты
+      operationId: getAllProducts
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+    post:
+      tags:
+        - Products
+      summary: Создать новый продукт
+      operationId: createProduct
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: Продукт успешно создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+
+  /api/products/{id}:
+    get:
+      tags:
+        - Products
+      summary: Получить продукт по ID
+      operationId: getProductById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Продукт не найден
+    put:
+      tags:
+        - Products
+      summary: Обновить продукт
+      operationId: updateProduct
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: Продукт успешно обновлен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+    delete:
+      tags:
+        - Products
+      summary: Удалить продукт
+      operationId: deleteProduct
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Продукт успешно удален
+
+  /api/products/paginated:
+    get:
+      tags:
+        - Products
+      summary: Получить страницу продуктов с пагинацией
+      operationId: getProductsPaginated
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          schema:
+            type: integer
+            default: 10
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageProduct'
+
+components:
+  schemas:
+    ProductType:
+      type: object
+      properties:
+        id:
+          type: integer
+        typeName:
+          type: string
+          description: Название типа (Пищевая добавка / БАД)
+        description:
+          type: string
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+
+    ProductStatus:
+      type: object
+      properties:
+        id:
+          type: integer
+        statusName:
+          type: string
+          description: Название статуса (действует / на регистрации / отозван)
+        description:
+          type: string
+        sortOrder:
+          type: integer
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+
+    Manufacturer:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        country:
+          type: string
+        legalAddress:
+          type: string
+        inn:
+          type: string
+        ogrn:
+          type: string
+        contactPhone:
+          type: string
+        contactEmail:
+          type: string
+        website:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+        productName:
+          type: string
+          description: Наименование продукта (обязательное)
+        productType:
+          $ref: '#/components/schemas/ProductType'
+        tnVedCode:
+          type: string
+          description: Код ТН ВЭД ЕАЭС
+        eNumber:
+          type: string
+          description: E-номер (для пищевых добавок)
+        releaseForm:
+          type: string
+          description: Форма выпуска
+        manufacturer:
+          $ref: '#/components/schemas/Manufacturer'
+        sgrNumber:
+          type: string
+          description: Номер СГР
+        sgrRegistrationDate:
+          type: string
+          format: date
+          description: Дата регистрации СГР
+        shelfLifeMonths:
+          type: integer
+          description: Срок годности в месяцах
+        storageConditions:
+          type: string
+          description: Условия хранения
+        status:
+          $ref: '#/components/schemas/ProductStatus'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    PageProductType:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductType'
+        totalPages:
+          type: integer
+        totalElements:
+          type: integer
+        last:
+          type: boolean
+        size:
+          type: integer
+        number:
+          type: integer
+        first:
+          type: boolean
+        numberOfElements:
+          type: integer
+        empty:
+          type: boolean
+
+    PageProductStatus:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductStatus'
+        totalPages:
+          type: integer
+        totalElements:
+          type: integer
+        last:
+          type: boolean
+        size:
+          type: integer
+        number:
+          type: integer
+        first:
+          type: boolean
+        numberOfElements:
+          type: integer
+        empty:
+          type: boolean
+
+    PageManufacturer:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Manufacturer'
+        totalPages:
+          type: integer
+        totalElements:
+          type: integer
+        last:
+          type: boolean
+        size:
+          type: integer
+        number:
+          type: integer
+        first:
+          type: boolean
+        numberOfElements:
+          type: integer
+        empty:
+          type: boolean
+
+    PageProduct:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+        totalPages:
+          type: integer
+        totalElements:
+          type: integer
+        last:
+          type: boolean
+        size:
+          type: integer
+        number:
+          type: integer
+        first:
+          type: boolean
+        numberOfElements:
+          type: integer
+        empty:
+          type: boolean
