@@ -114,31 +114,6 @@ paths:
         '204':
           description: Тип успешно удален
 
-  /api/product-types/paginated:
-    get:
-      tags:
-        - Product Types
-      summary: Получить страницу типов продукции с пагинацией
-      operationId: getProductTypesPaginated
-      parameters:
-        - name: page
-          in: query
-          schema:
-            type: integer
-            default: 0
-        - name: size
-          in: query
-          schema:
-            type: integer
-            default: 10
-      responses:
-        '200':
-          description: Успешный ответ
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PageProductType'
-
   # ==================== Product Statuses ====================
   /api/product-statuses:
     get:
@@ -233,31 +208,6 @@ paths:
       responses:
         '204':
           description: Статус успешно удален
-
-  /api/product-statuses/paginated:
-    get:
-      tags:
-        - Product Statuses
-      summary: Получить страницу статусов с пагинацией
-      operationId: getProductStatusesPaginated
-      parameters:
-        - name: page
-          in: query
-          schema:
-            type: integer
-            default: 0
-        - name: size
-          in: query
-          schema:
-            type: integer
-            default: 10
-      responses:
-        '200':
-          description: Успешный ответ
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PageProductStatus'
 
   # ==================== Manufacturers ====================
   /api/manufacturers:
@@ -354,31 +304,6 @@ paths:
         '204':
           description: Производитель успешно удален
 
-  /api/manufacturers/paginated:
-    get:
-      tags:
-        - Manufacturers
-      summary: Получить страницу производителей с пагинацией
-      operationId: getManufacturersPaginated
-      parameters:
-        - name: page
-          in: query
-          schema:
-            type: integer
-            default: 0
-        - name: size
-          in: query
-          schema:
-            type: integer
-            default: 10
-      responses:
-        '200':
-          description: Успешный ответ
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PageManufacturer'
-
   # ==================== Products ====================
   /api/products:
     get:
@@ -473,31 +398,6 @@ paths:
       responses:
         '204':
           description: Продукт успешно удален
-
-  /api/products/paginated:
-    get:
-      tags:
-        - Products
-      summary: Получить страницу продуктов с пагинацией
-      operationId: getProductsPaginated
-      parameters:
-        - name: page
-          in: query
-          schema:
-            type: integer
-            default: 0
-        - name: size
-          in: query
-          schema:
-            type: integer
-            default: 10
-      responses:
-        '200':
-          description: Успешный ответ
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PageProduct'
 
 components:
   schemas:
@@ -607,99 +507,3 @@ components:
         updatedAt:
           type: string
           format: date-time
-
-    PageProductType:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductType'
-        totalPages:
-          type: integer
-        totalElements:
-          type: integer
-        last:
-          type: boolean
-        size:
-          type: integer
-        number:
-          type: integer
-        first:
-          type: boolean
-        numberOfElements:
-          type: integer
-        empty:
-          type: boolean
-
-    PageProductStatus:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductStatus'
-        totalPages:
-          type: integer
-        totalElements:
-          type: integer
-        last:
-          type: boolean
-        size:
-          type: integer
-        number:
-          type: integer
-        first:
-          type: boolean
-        numberOfElements:
-          type: integer
-        empty:
-          type: boolean
-
-    PageManufacturer:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/Manufacturer'
-        totalPages:
-          type: integer
-        totalElements:
-          type: integer
-        last:
-          type: boolean
-        size:
-          type: integer
-        number:
-          type: integer
-        first:
-          type: boolean
-        numberOfElements:
-          type: integer
-        empty:
-          type: boolean
-
-    PageProduct:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/Product'
-        totalPages:
-          type: integer
-        totalElements:
-          type: integer
-        last:
-          type: boolean
-        size:
-          type: integer
-        number:
-          type: integer
-        first:
-          type: boolean
-        numberOfElements:
-          type: integer
-        empty:
-          type: boolean

@@ -1,0 +1,92 @@
+@startuml
+!theme plain
+
+title Система управления номенклатурой пищевых и БАД
+
+' ========== Справочники ==========
+
+entity "product_types" as types {
+  * id : SERIAL <<PK>>
+  --
+  * type_name : VARCHAR(100)
+  description : TEXT
+}
+
+entity "product_statuses" as statuses {
+  * id : SERIAL <<PK>>
+  --
+  * status_name : VARCHAR(50)
+  description : TEXT
+  sort_order : INTEGER
+}
+
+entity "manufacturers" as manufacturers {
+  * id : SERIAL <<PK>>
+  --
+  name : VARCHAR(255)
+  country : VARCHAR(100)
+  legal_address : TEXT
+  inn : VARCHAR(50)
+  ogrn : VARCHAR(50)
+  contact_phone : VARCHAR(50)
+  contact_email : VARCHAR(100)
+  website : VARCHAR(255)
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+}
+
+' ========== Основная таблица ==========
+
+entity "products" as products {
+  * id : SERIAL <<PK>>
+  --
+  * product_name : VARCHAR(255)
+  tn_ved_code : VARCHAR(50)
+  e_number : VARCHAR(20)
+  release_form : VARCHAR(100)
+  sgr_number : VARCHAR(100)
+  sgr_registration_date : DATE
+  shelf_life_months : INTEGER
+  storage_conditions : TEXT
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+  --
+  * product_type_id : INTEGER <<FK>>
+  * manufacturer_id : INTEGER <<FK>>
+  * status_id : INTEGER <<FK>>
+}
+
+' ========== Связи ==========
+
+types ||--o{ products : "имеет тип"
+statuses ||--o{ products : "имеет статус"
+manufacturers ||--o{ products : "производит"
+
+' ========== Легенда ==========
+
+note right of types
+  **Типы продукции:**
+  - Пищевая добавка
+  - БАД
+end note
+
+note right of statuses
+  **Статусы:**
+  - действует
+  - на регистрации
+  - отозван
+end note
+
+note bottom of products
+  **Карточка номенклатуры:**
+  - Наименование (обязательное)
+  - Код ТН ВЭД ЕАЭС
+  - E-номер
+  - Форма выпуска
+  - Номер СГР
+  - Дата регистрации СГР
+  - Срок годности (мес)
+  - Условия хранения
+end note
+
+@enduml
