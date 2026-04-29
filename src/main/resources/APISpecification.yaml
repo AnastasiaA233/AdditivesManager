@@ -330,7 +330,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Product'
+              $ref: '#/components/schemas/ProductCreateRequest'
       responses:
         '200':
           description: Продукт успешно создан
@@ -376,7 +376,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Product'
+              $ref: '#/components/schemas/ProductUpdateRequest'
       responses:
         '200':
           description: Продукт успешно обновлен
@@ -411,10 +411,7 @@ components:
           description: Название типа (Пищевая добавка / БАД)
         description:
           type: string
-        products:
-          type: array
-          items:
-            $ref: '#/components/schemas/Product'
+          description: Описание типа
 
     ProductStatus:
       type: object
@@ -426,12 +423,7 @@ components:
           description: Название статуса (действует / на регистрации / отозван)
         description:
           type: string
-        sortOrder:
-          type: integer
-        products:
-          type: array
-          items:
-            $ref: '#/components/schemas/Product'
+          description: Описание статуса
 
     Manufacturer:
       type: object
@@ -440,30 +432,129 @@ components:
           type: integer
         name:
           type: string
+          description: Наименование производителя (обязательное)
         country:
           type: string
+          description: Страна производства (обязательное)
         legalAddress:
           type: string
+          description: Юридический адрес
         inn:
           type: string
+          description: ИНН
         ogrn:
           type: string
+          description: ОГРН
         contactPhone:
           type: string
+          description: Контактный телефон
         contactEmail:
           type: string
+          description: Email
         website:
           type: string
+          description: Веб-сайт
         createdAt:
           type: string
           format: date-time
         updatedAt:
           type: string
           format: date-time
-        products:
+
+    ProductCreateRequest:
+      type: object
+      required:
+        - productName
+        - productType
+        - status
+      properties:
+        productName:
+          type: string
+          description: Наименование продукта (обязательное)
+        productType:
+          type: object
+          required:
+            - id
+          properties:
+            id:
+              type: integer
+        tnVedCode:
+          type: string
+          description: Код ТН ВЭД ЕАЭС (необязательное)
+        eNumber:
+          type: string
+          description: E-номер для пищевых добавок (необязательное)
+        releaseForm:
+          type: string
+          description: Форма выпуска (необязательное)
+        manufacturers:
+          type: array
+          description: Список производителей (необязательное)
+          items:
+            type: object
+            required:
+              - id
+            properties:
+              id:
+                type: integer
+        sgrNumber:
+          type: string
+          description: Номер СГР (необязательное)
+        sgrRegistrationDate:
+          type: string
+          format: date
+          description: Дата регистрации СГР (необязательное)
+        shelfLifeMonths:
+          type: integer
+          description: Срок годности в месяцах (необязательное)
+        storageConditions:
+          type: string
+          description: Условия хранения (необязательное)
+        status:
+          type: object
+          required:
+            - id
+          properties:
+            id:
+              type: integer
+
+    ProductUpdateRequest:
+      type: object
+      properties:
+        productName:
+          type: string
+        productType:
+          type: object
+          properties:
+            id:
+              type: integer
+        tnVedCode:
+          type: string
+        eNumber:
+          type: string
+        releaseForm:
+          type: string
+        manufacturers:
           type: array
           items:
-            $ref: '#/components/schemas/Product'
+            type: object
+            properties:
+              id:
+                type: integer
+        sgrNumber:
+          type: string
+        sgrRegistrationDate:
+          type: string
+          format: date
+        shelfLifeMonths:
+          type: integer
+        storageConditions:
+          type: string
+        status:
+          type: object
+          properties:
+            id:
+              type: integer
 
     Product:
       type: object
@@ -472,33 +563,27 @@ components:
           type: integer
         productName:
           type: string
-          description: Наименование продукта (обязательное)
         productType:
           $ref: '#/components/schemas/ProductType'
         tnVedCode:
           type: string
-          description: Код ТН ВЭД ЕАЭС
         eNumber:
           type: string
-          description: E-номер (для пищевых добавок)
         releaseForm:
           type: string
-          description: Форма выпуска
-        manufacturer:
-          $ref: '#/components/schemas/Manufacturer'
+        manufacturers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Manufacturer'
         sgrNumber:
           type: string
-          description: Номер СГР
         sgrRegistrationDate:
           type: string
           format: date
-          description: Дата регистрации СГР
         shelfLifeMonths:
           type: integer
-          description: Срок годности в месяцах
         storageConditions:
           type: string
-          description: Условия хранения
         status:
           $ref: '#/components/schemas/ProductStatus'
         createdAt:

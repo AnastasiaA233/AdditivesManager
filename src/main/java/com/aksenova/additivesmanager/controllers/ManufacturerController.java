@@ -1,0 +1,46 @@
+package com.aksenova.additivesmanager.controllers;
+
+import com.aksenova.additivesmanager.entity.Manufacturer;
+import com.aksenova.additivesmanager.service.ManufacturerService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/manufacturers")
+@RequiredArgsConstructor
+public class ManufacturerController {
+
+    private final ManufacturerService manufacturerService;
+
+    @GetMapping
+    public ResponseEntity<List<Manufacturer>> getAll() {
+        return ResponseEntity.ok(manufacturerService.getAllManufacturers());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Manufacturer> getById(@PathVariable Integer id) {
+        return manufacturerService.getManufacturerById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    public ResponseEntity<Manufacturer> create(@RequestBody Manufacturer manufacturer) {
+        return ResponseEntity.ok(manufacturerService.createManufacturer(manufacturer));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Manufacturer> update(@PathVariable Integer id,
+                                               @RequestBody Manufacturer manufacturer) {
+        return ResponseEntity.ok(manufacturerService.updateManufacturer(id, manufacturer));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
+        manufacturerService.deleteManufacturer(id);
+        return ResponseEntity.noContent().build();
+    }
+}
