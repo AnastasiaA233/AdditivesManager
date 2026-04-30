@@ -1,6 +1,8 @@
 package com.aksenova.additivesmanager.service;
 
+import com.aksenova.additivesmanager.entity.Manufacturer;
 import com.aksenova.additivesmanager.entity.Product;
+import com.aksenova.additivesmanager.repository.ManufacturerRepository;
 import com.aksenova.additivesmanager.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import java.util.Optional;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final ManufacturerRepository manufacturerRepository;
 
     @Transactional
     public Product createProduct(Product product) {
@@ -31,13 +34,17 @@ public class ProductService {
         existingProduct.setTnVedCode(updatedProduct.getTnVedCode());
         existingProduct.setENumber(updatedProduct.getENumber());
         existingProduct.setReleaseForm(updatedProduct.getReleaseForm());
-//        existingProduct.setManufacturer(updatedProduct.getManufacturer());
         existingProduct.setSgrNumber(updatedProduct.getSgrNumber());
         existingProduct.setSgrRegistrationDate(updatedProduct.getSgrRegistrationDate());
         existingProduct.setShelfLifeMonths(updatedProduct.getShelfLifeMonths());
         existingProduct.setStorageConditions(updatedProduct.getStorageConditions());
         existingProduct.setStatus(updatedProduct.getStatus());
 
+        existingProduct.getManufacturers().clear();
+        for (Manufacturer m : updatedProduct.getManufacturers()) {
+            Manufacturer managed = manufacturerRepository.findById(m.getId()).orElseThrow();
+            existingProduct.getManufacturers().add(managed);
+        }
         return productRepository.save(existingProduct);
     }
 

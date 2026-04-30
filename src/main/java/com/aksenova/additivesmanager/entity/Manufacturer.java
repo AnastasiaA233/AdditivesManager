@@ -1,5 +1,7 @@
 package com.aksenova.additivesmanager.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -55,5 +57,6 @@ public class Manufacturer {
     private LocalDateTime updatedAt;
 
     @ManyToMany(mappedBy = "manufacturers")
+    @JsonIgnoreProperties("manufacturers")
     private List<Product> products = new ArrayList<>();
 }
