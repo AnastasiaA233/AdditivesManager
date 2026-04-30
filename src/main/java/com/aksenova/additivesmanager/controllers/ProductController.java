@@ -7,15 +7,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/products")
+
 @RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
 
-    @GetMapping
+    @GetMapping("/list")
     public ResponseEntity<List<Product>> getAll() {
         return ResponseEntity.ok(productService.getAllProducts());
     }
@@ -32,7 +33,7 @@ public class ProductController {
         return ResponseEntity.ok(productService.createProduct(product));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<Product> update(@PathVariable Integer id,
                                           @RequestBody Product product) {
         return ResponseEntity.ok(productService.updateProduct(id, product));
